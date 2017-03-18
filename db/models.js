@@ -1,14 +1,23 @@
 const Sequelize = require('sequelize');
 
-const db = new Sequelize(
-    'postgres://localhost:5432/secrets'
-);
+const db = new Sequelize('postgres://localhost:5432/secrets', { logging: false });
 
-const SecretModel = db.define('secret', {});
+const Secret = db.define('secret', {
+    text: {
+        type: Sequelize.TEXT
+    }
+});
 
-const CommentModel = db.define('comment', {});
+const Comment = db.define('comment', {
+    text: {
+        type: Sequelize.TEXT
+    }
+});
+
+Comment.belongsTo(Secret);
+Secret.hasMany(Comment);
 
 module.exports = {
-    Secret: SecretModel,
-    Comment: CommentModel
+    Secret,
+    Comment
 };
